@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070b14">
+  <meta name="description" content="AstroLake — live space data analytics from NASA and Launch Library 2">
+  <title>AstroLake · Space Intelligence</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" aria-label="AstroLake home">
+        <span class="brand-mark"><i></i><i></i><i></i></span>
+        <span><strong>ASTROLAKE</strong><small>SPACE INTELLIGENCE</small></span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary navigation">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">⌂</span><span>Overview</span><kbd>01</kbd></button>
+        <button class="nav-item" data-view="exoplanets"><span class="nav-icon">◉</span><span>Exoplanets</span><kbd>02</kbd></button>
+        <button class="nav-item" data-view="launches"><span class="nav-icon">↗</span><span>Launches</span><kbd>03</kbd></button>
+        <button class="nav-item" data-view="apod"><span class="nav-icon">✦</span><span>Observatory</span><kbd>04</kbd></button>
+        <button class="nav-item" data-view="habitability"><span class="nav-icon">⬡</span><span>Habitability</span><kbd>05</kbd></button>
+        <button class="nav-item" data-view="pipeline"><span class="nav-icon">⌁</span><span>Pipeline</span><kbd>06</kbd></button>
+        <button class="nav-item" data-view="run"><span class="nav-icon">▶</span><span>Run Pipeline</span><kbd>07</kbd></button>
+      </nav>
+
+      <div class="source-stack">
+        <p class="eyebrow">CONNECTED SOURCES</p>
+        <div class="source"><span class="source-dot nasa"></span><span>NASA Exoplanet Archive</span><b>LIVE</b></div>
+        <div class="source"><span class="source-dot apod"></span><span>NASA Science APOD</span><b>LIVE</b></div>
+        <div class="source"><span class="source-dot launch"></span><span>Launch Library 2</span><b>LIVE</b></div>
+      </div>
+
+      <div class="system-card">
+        <span class="pulse"></span>
+        <div><strong>All systems nominal</strong><small id="sidebar-sync">Checking cache…</small></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-button" id="menu-button" aria-label="Open menu">☰</button>
+        <div class="breadcrumb"><span>ASTROLAKE</span><i>/</i><strong id="breadcrumb">OVERVIEW</strong></div>
+        <div class="top-actions">
+          <div class="utc-clock"><span>UTC</span><strong id="clock">--:--:--</strong></div>
+          <button class="refresh-button" id="refresh-button"><span>↻</span> Refresh sources</button>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="view active" id="view-overview">
+          <div class="hero">
+            <div class="hero-copy">
+              <span class="status-pill"><i></i> DATA LAKE ONLINE</span>
+              <h1>Read the universe<br><em>as it changes.</em></h1>
+              <p>A unified view of confirmed worlds, orbital launch history, and NASA's daily window into the cosmos.</p>
+            </div>
+            <div class="orbit-visual" aria-hidden="true">
+              <div class="orbit orbit-a"><i></i></div>
+              <div class="orbit orbit-b"><i></i></div>
+              <div class="orbit orbit-c"><i></i></div>
+              <div class="planet-core"></div>
+            </div>
+          </div>
+
+          <div class="metrics-grid" id="overview-metrics">
+            <div class="metric-card skeleton"></div><div class="metric-card skeleton"></div>
+            <div class="metric-card skeleton"></div><div class="metric-card skeleton"></div>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel panel-wide">
+              <header class="panel-header"><div><span class="eyebrow">DISCOVERY VELOCITY</span><h2>Confirmed worlds by year</h2></div><span class="panel-tag">NASA TAP</span></header>
+              <div class="chart chart-tall" id="discovery-chart"><div class="loader"></div></div>
+            </article>
+            <article class="panel">
+              <header class="panel-header"><div><span class="eyebrow">METHOD MIX</span><h2>How planets are found</h2></div></header>
+              <div class="method-list" id="method-list"><div class="loader"></div></div>
+            </article>
+            <article class="panel">
+              <header class="panel-header"><div><span class="eyebrow">USE CASE OUTPUT</span><h2>Top habitability candidates</h2></div><button class="text-button" data-jump="habitability">View all →</button></header>
+              <div class="launch-list" id="top-habitability"><div class="loader"></div></div>
+            </article>
+            <article class="panel">
+              <header class="panel-header"><div><span class="eyebrow">MISSION LOG</span><h2>Recent SpaceX launches</h2></div><button class="text-button" data-jump="launches">View all →</button></header>
+              <div class="launch-list" id="recent-launches"><div class="loader"></div></div>
+            </article>
+            <article class="panel panel-wide apod-feature" id="featured-apod"><div class="loader"></div></article>
+          </div>
+        </section>
+
+        <section class="view" id="view-exoplanets">
+          <div class="page-heading"><div><span class="eyebrow">NASA EXOPLANET ARCHIVE</span><h1>Exoplanet explorer</h1><p>Filter and compare confirmed planetary systems across the Milky Way.</p></div><span class="big-index">02</span></div>
+          <div class="toolbar">
+            <label class="search-field"><span>⌕</span><input id="exo-search" type="search" placeholder="Search planet or host…"></label>
+            <select id="exo-method"><option value="">All methods</option></select>
+            <label class="year-field"><span>From</span><input id="exo-year-min" type="number" value="1990" min="1900" max="2200"></label>
+            <label class="year-field"><span>To</span><input id="exo-year-max" type="number" value="2026" min="1900" max="2200"></label>
+          </div>
+          <div class="two-column">
+            <article class="panel"><header class="panel-header"><div><span class="eyebrow">PLANETARY SCALE</span><h2>Mass × radius</h2></div><span class="panel-tag">LOG SCALE</span></header><div class="chart chart-tall" id="scatter-chart"></div></article>
+            <article class="panel insight-panel" id="exo-insights"></article>
+          </div>
+          <article class="panel data-panel"><header class="panel-header"><div><span class="eyebrow">CATALOG</span><h2 id="exo-result-count">Confirmed planets</h2></div></header><div class="table-wrap"><table><thead><tr><th>Planet</th><th>Host</th><th>Year</th><th>Method</th><th>Radius ⊕</th><th>Mass ⊕</th><th>Distance pc</th></tr></thead><tbody id="exo-table"></tbody></table></div></article>
+        </section>
+
+        <section class="view" id="view-launches">
+          <div class="page-heading"><div><span class="eyebrow">SPACEX · LAUNCH LIBRARY 2</span><h1>Launch intelligence</h1><p>Mission cadence, vehicles, outcomes, and launch infrastructure.</p></div><span class="big-index">03</span></div>
+          <div class="metrics-grid compact" id="launch-metrics"></div>
+          <div class="toolbar"><label class="search-field"><span>⌕</span><input id="launch-search" type="search" placeholder="Search mission or vehicle…"></label><select id="launch-outcome"><option value="">All outcomes</option><option>SUCCESS</option><option>FAILURE</option><option>UNKNOWN</option></select><input id="launch-year" type="number" placeholder="Year" min="2000" max="2200"></div>
+          <div class="two-column"><article class="panel"><header class="panel-header"><div><span class="eyebrow">VEHICLE FLEET</span><h2>Launches by rocket</h2></div></header><div class="bar-chart" id="rocket-chart"></div></article><article class="panel launch-dial-panel" id="launch-dial"></article></div>
+          <article class="panel data-panel"><header class="panel-header"><div><span class="eyebrow">MISSION ARCHIVE</span><h2 id="launch-result-count">Launches</h2></div></header><div class="table-wrap"><table><thead><tr><th>Flight</th><th>Mission</th><th>Date</th><th>Vehicle</th><th>Launchpad</th><th>Outcome</th></tr></thead><tbody id="launch-table"></tbody></table></div></article>
+        </section>
+
+        <section class="view" id="view-apod">
+          <div class="page-heading"><div><span class="eyebrow">NASA ASTRONOMY PICTURE OF THE DAY</span><h1>Cosmic observatory</h1><p>A year of official NASA imagery and stories, cached locally.</p></div><span class="big-index">04</span></div>
+          <div class="toolbar"><label class="search-field"><span>⌕</span><input id="apod-search" type="search" placeholder="Search the cosmos…"></label><select id="apod-media"><option value="">All media</option><option value="image">Images</option><option value="video">Videos</option></select><input id="apod-year" type="number" placeholder="Year" min="1995" max="2200"></div>
+          <div class="gallery-head"><strong id="apod-result-count">Observations</strong><span>Select a card to inspect the story</span></div>
+          <div class="apod-grid" id="apod-grid"><div class="loader"></div></div>
+        </section>
+
+        <section class="view" id="view-habitability">
+          <div class="page-heading"><div><span class="eyebrow">THE USE CASE · ESI-STYLE SCORING</span><h1>Habitability candidates</h1><p>Every confirmed exoplanet with a measured radius, mass, and orbital period is scored against Earth using an Earth Similarity Index-style model, computed by the real PySpark gold-layer transform. This ranked shortlist — not the charts — is the pipeline's actual output.</p></div><span class="big-index">05</span></div>
+          <div class="metrics-grid compact" id="habitability-metrics"></div>
+          <div class="toolbar">
+            <label class="search-field"><span>⌕</span><input id="hab-search" type="search" placeholder="Search planet or host…"></label>
+            <select id="hab-tier"><option value="">All tiers</option><option value="HIGH">HIGH</option><option value="MODERATE">MODERATE</option><option value="LOW">LOW</option></select>
+          </div>
+          <div class="two-column">
+            <article class="panel data-panel panel-wide"><header class="panel-header"><div><span class="eyebrow">RANKED SHORTLIST</span><h2 id="hab-result-count">Habitability candidates</h2></div></header><div class="table-wrap"><table><thead><tr><th>Planet</th><th>Host</th><th>Radius ⊕</th><th>Mass ⊕</th><th>Period (d)</th><th>HZ proxy</th><th>Score</th><th>Tier</th></tr></thead><tbody id="hab-table"></tbody></table></div></article>
+            <article class="panel" id="hab-alerts-panel"><header class="panel-header"><div><span class="eyebrow">PIPELINE ALERTS</span><h2>New HIGH-tier discoveries</h2></div></header><div id="hab-alerts"></div></article>
+          </div>
+        </section>
+
+        <section class="view" id="view-pipeline">
+          <div class="page-heading"><div><span class="eyebrow">DATA ENGINEERING</span><h1>Pipeline control</h1><p>Source health, transformations, serving layers, and quality gates.</p></div><span class="big-index">06</span></div>
+          <article class="panel flow-panel">
+            <header class="panel-header"><div><span class="eyebrow">END-TO-END LINEAGE</span><h2>Live data path</h2></div><span class="status-pill small"><i></i> OPERATIONAL</span></header>
+            <div class="pipeline-flow">
+              <div class="flow-node"><span>01</span><i class="nasa"></i><strong>Source APIs</strong><small>NASA · LL2</small></div><b>→</b>
+              <div class="flow-node"><span>02</span><i class="violet"></i><strong>Local Bronze</strong><small>Parquet lake</small></div><b>→</b>
+              <div class="flow-node"><span>03</span><i class="amber"></i><strong>Apache Airflow</strong><small>DAG orchestration</small></div><b>→</b>
+              <div class="flow-node"><span>04</span><i class="red"></i><strong>Apache Spark</strong><small>Silver/Gold + scoring</small></div><b>→</b>
+              <div class="flow-node"><span>05</span><i class="green"></i><strong>Serving</strong><small>SQLite analytics</small></div><b>→</b>
+              <div class="flow-node"><span>06</span><i class="cyan"></i><strong>FastAPI</strong><small>JSON · UI</small></div>
+            </div>
+            <div class="pipeline-actions">
+              <button class="refresh-button" id="go-to-run-button"><span>▶</span> Run full Airflow + Spark pipeline</button>
+              <button class="text-button" id="refresh-lineage-button">↻ Refresh lineage counts</button>
+              <p class="pipeline-hint">Opens the Run Pipeline page, where you can trigger the real DAG and watch each of its 13 tasks execute live, step by step.</p>
+            </div>
+          </article>
+
+          <article class="panel lineage-panel">
+            <header class="panel-header"><div><span class="eyebrow">MEASURED ON DISK · NOT ESTIMATED</span><h2>Live record lineage, per source</h2></div><span class="panel-tag" id="lineage-updated">—</span></header>
+            <p class="lineage-note">Every number below is counted directly from the Parquet files Spark wrote and the SQLite database the dashboard reads — this is what actually moved through the pipeline on its last run, not a mockup.</p>
+            <div class="lineage-grid" id="lineage-grid"><div class="loader"></div></div>
+          </article>
+
+          <div class="two-column"><article class="panel"><header class="panel-header"><div><span class="eyebrow">QUALITY GATES</span><h2>Validation status</h2></div></header><div id="quality-list"></div></article><article class="panel"><header class="panel-header"><div><span class="eyebrow">SOURCE RUNS</span><h2>Latest ingestion</h2></div></header><div id="pipeline-metrics"></div></article></div>
+          <article class="panel data-panel"><header class="panel-header"><div><span class="eyebrow">DAG RUN HISTORY</span><h2>Pipeline executions</h2></div></header><div class="table-wrap"><table><thead><tr><th>Run ID</th><th>Execution date</th><th>Status</th><th>Records processed</th><th>Notes</th></tr></thead><tbody id="dag-runs-table"></tbody></table></div></article>
+          <article class="panel data-panel"><header class="panel-header"><div><span class="eyebrow">AUDIT LOG</span><h2>Recent ingestion events</h2></div></header><div class="table-wrap"><table><thead><tr><th>Source</th><th>Run time</th><th>Fetched</th><th>Written</th><th>Duration</th><th>Status</th></tr></thead><tbody id="pipeline-table"></tbody></table></div></article>
+        </section>
+
+        <section class="view" id="view-run">
+          <div class="page-heading"><div><span class="eyebrow">LIVE EXECUTION</span><h1>Run the pipeline</h1><p>Triggers the real Airflow DAG and shows every one of its 13 tasks as it actually executes — not a simulated progress bar.</p></div><span class="big-index">07</span></div>
+
+          <article class="panel run-control-panel">
+            <div class="run-control-row">
+              <button class="refresh-button" id="trigger-run-button"><span>▶</span> Trigger pipeline run</button>
+              <div class="run-status" id="run-status-pill"><span class="status-pill small" id="run-overall-pill"><i></i> IDLE</span><span id="run-id-label"></span></div>
+            </div>
+            <p class="pipeline-hint">Launches <code>airflow dags test astrolake_data_pipeline &lt;today&gt;</code> as a background process and polls Airflow's own task-instance state every 2 seconds. Each step below reflects Airflow's real, persisted status — pending → running → success/failed.</p>
+          </article>
+
+          <article class="panel dag-panel">
+            <header class="panel-header"><div><span class="eyebrow">DAG GRAPH · ACTUAL TASK DEPENDENCIES</span><h2>Pipeline flow</h2></div></header>
+            <div class="dag-graph" id="dag-graph"></div>
+          </article>
+
+          <article class="panel">
+            <header class="panel-header"><div><span class="eyebrow">13 TASKS · IN DAG ORDER</span><h2>Execution steps</h2></div></header>
+            <div class="run-steps" id="run-steps"></div>
+          </article>
+
+          <article class="panel run-results-panel" id="run-results-panel" style="display:none">
+            <header class="panel-header"><div><span class="eyebrow">RUN COMPLETE</span><h2>Results</h2></div></header>
+            <div class="metrics-grid compact" id="run-results-metrics"></div>
+            <p class="pipeline-hint">Full lineage counts and DAG history are on the <button class="text-button" data-jump="pipeline">Pipeline page →</button></p>
+          </article>
+
+          <article class="panel data-panel">
+            <header class="panel-header"><div><span class="eyebrow">LIVE PROCESS OUTPUT</span><h2>Airflow log tail</h2></div></header>
+            <pre class="run-log" id="run-log">No run triggered yet.</pre>
+          </article>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="apod-dialog"><button class="dialog-close" aria-label="Close">×</button><div id="dialog-content"></div></dialog>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>
